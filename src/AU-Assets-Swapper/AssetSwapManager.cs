@@ -59,7 +59,7 @@ internal class AssetSwapManager
         spriteCache.Clear(); texCache.Clear(); audioCache.Clear(); fontCache.Clear();
         ScanAndLoadAssets();
     }
-// Fuck you, I made it. This is not ai generated.
+// You are a gay, I made it. This is not ai generated.
     private void Scan(string cat, Dictionary<string, string> map)
     {
         var dir = Path.Combine(_root, cat);
@@ -139,6 +139,7 @@ internal class AssetSwapManager
     }
 
     // typed variant for Resources.Load(path, type)
+    // Dont say that again.
     public UnityEngine.Object TryFindReplacement(string name, Type t)
     {
         if (t == typeof(Texture2D) && HasTexture(name))
