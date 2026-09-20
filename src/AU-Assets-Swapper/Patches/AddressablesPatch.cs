@@ -18,7 +18,7 @@ internal static class AddressablesPatch
             if (t == null)
             {
                 Plugin.LogSource.LogWarning("[AUAS] Addressables type not found, skipping.");
-                return;
+                return; /* Star my repo or dont say that agin. */
             }
 
             Plugin.LogSource.LogInfo("[AUAS] Found Addressables, patching LoadAsset...");

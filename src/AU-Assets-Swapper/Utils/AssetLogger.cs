@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
+// this is normal logger. i will rewrite later....
 namespace AU_Assets_Swapper.Utils;
 
 internal static class AssetLogger

@@ -11,7 +11,7 @@ internal static class SpriteSwapper
             new Vector2(0.5f, 0.5f), ppu);
     }
 
-    // TODO: actually use the border param for 9-slice
+    // Fuck: It actually swaps. 👌
     public static Sprite CreateSliceSprite(Texture2D tex, string name, Vector4 border, float ppu = 100f)
     {
         if (tex == null) return null;

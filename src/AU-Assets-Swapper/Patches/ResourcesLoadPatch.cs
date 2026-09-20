@@ -14,7 +14,9 @@ internal static class ResourcesLoadPatch
     private static readonly HarmonyMethod _loadPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(LoadPrefix)));
     private static readonly HarmonyMethod _typedPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(TypedPrefix)));
     private static readonly HarmonyMethod _allPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(AllPrefix)));
-
+/* IS THIS LOOKS AI?
+ 👌
+ 🖕 */
     public static void Patch(Harmony harmony)
     {
         foreach (var m in typeof(Resources).GetMethods(BindingFlags.Public | BindingFlags.Static))
@@ -55,7 +57,7 @@ internal static class ResourcesLoadPatch
 
         return true;
     }
-
+// Gahh. It works.
     internal static bool TypedPrefix(string path, Type t, ref UnityEngine.Object __result)
     {
         if (Interlocked.CompareExchange(ref _typedLogged, 1, 0) == 0)
