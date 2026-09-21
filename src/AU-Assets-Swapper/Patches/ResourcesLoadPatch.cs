@@ -33,8 +33,8 @@ internal static class ResourcesLoadPatch
     private static readonly HarmonyMethod _loadPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(LoadPrefix)));
     private static readonly HarmonyMethod _typedPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(TypedPrefix)));
     private static readonly HarmonyMethod _allPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(AllPrefix)));
-/* IS THIS LOOKS AI?
-nooooo. star my repo plz */
+/* https://github.com/isam-ahmed0/AU-Assets-Swapper
+Please star my repo plz */
     public static void Patch(Harmony harmony)
     {
         foreach (var m in typeof(Resources).GetMethods(BindingFlags.Public | BindingFlags.Static))

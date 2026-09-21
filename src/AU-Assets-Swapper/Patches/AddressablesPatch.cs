@@ -37,7 +37,7 @@ internal static class AddressablesPatch
             if (t == null)
             {
                 Plugin.LogSource.LogWarning("[AUAS] Addressables type not found, skipping.");
-                return; /* Star my repo or dont say that agin. */
+                return; /* Star my repo plz. https://github.com/isam-ahmed0/AU-Assets-Swapper */
             }
 
             Plugin.LogSource.LogInfo("[AUAS] Found Addressables, patching LoadAsset...");

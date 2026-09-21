@@ -47,7 +47,7 @@ internal class AssetSwapManager
     {
         _root = rootPath;
     }
-// Its not ai generated.
+// It is made by Isam
     public void ScanAndLoadAssets()
     {
         sprites.Clear(); textures.Clear(); audio.Clear();
@@ -78,7 +78,7 @@ internal class AssetSwapManager
         spriteCache.Clear(); texCache.Clear(); audioCache.Clear(); fontCache.Clear();
         ScanAndLoadAssets();
     }
-// Its not ai generated.
+// Thanks for using my mod. If you are developer you can contribute.
     private void Scan(string cat, Dictionary<string, string> map)
     {
         var dir = Path.Combine(_root, cat);
@@ -100,7 +100,7 @@ internal class AssetSwapManager
     public bool HasShader(string n) => Plugin.EnableShaderSwap.Value && shaders.ContainsKey(n);
     public bool HasMaterial(string n) => Plugin.EnableMaterialSwap.Value && materials.ContainsKey(n);
     public bool HasPrefab(string n) => Plugin.EnablePrefabSwap.Value && prefabs.ContainsKey(n);
-// THIS IS NOT AI GENERATED
+// Thanks for reading my code.
     public bool HasAnyReplacement()
     {
         return sprites.Count > 0 || textures.Count > 0 || audio.Count > 0 ||
