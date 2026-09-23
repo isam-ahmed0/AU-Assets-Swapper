@@ -6,7 +6,7 @@
         <OutputPath>..\..\build\plugins\AU-Assets-Swapper</OutputPath>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <Version>1.0.0</Version>
+        <Version>0.2.0</Version>
         <Authors>AU-Assets-Swapper</Authors>
         <Description>BepInEx IL2CPP plugin for Among Us asset swapping</Description>
     </PropertyGroup>

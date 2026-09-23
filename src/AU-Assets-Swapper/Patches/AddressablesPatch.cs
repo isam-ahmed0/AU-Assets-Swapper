@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with AU Assets Swapper. If not, see <https://www.gnu.org/licenses/>.
- * https://gamebanana.com/mods/719417
+ * https://linktr.ee/AU_AS
  */
 
 using System;
@@ -37,7 +37,7 @@ internal static class AddressablesPatch
             if (t == null)
             {
                 Plugin.LogSource.LogWarning("[AUAS] Addressables type not found, skipping.");
-                return; /* Star my repo plz. https://gamebanana.com/mods/719417 */
+                return; /* Star my repo plz. https://linktr.ee/AU_AS */
             }
 
             Plugin.LogSource.LogInfo("[AUAS] Found Addressables, patching LoadAsset...");

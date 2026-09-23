@@ -1,5 +1,5 @@
 /* AU Assets Swapper - Made by Isam Ahmed (isam-ahme0, isam8087, isam0) - 2026
- * GPL-3.0 - https://gamebanana.com/mods/719417
+ * GPL-3.0 - https://linktr.ee/AU_AS
  */
 
 using System;
