@@ -10,6 +10,7 @@ This project is designed for modding and experimentation: you can swap sprites, 
 - Swap audio clips such as WAV and OGG files
 - Override fonts with custom TTF/OTF files
 - Replace shaders, materials, and prefabs from AssetBundle files
+- Multiple asset packs, one folder each, switchable in-game (F6)
 - Detect asset names live from the game and log them to the console
 - Hot-reload replacements while playing with F5
 - Inspect objects under the mouse in pick mode using F7
@@ -17,17 +18,24 @@ This project is designed for modding and experimentation: you can swap sprites, 
 
 ## How it works
 
-The plugin loads a swap root folder relative to the game install and scans directories such as:
+Each direct subfolder of `AUAS_Data` is a **pack**. The active pack is stored in config and scanned for category directories:
 
-- `Sprites/`
-- `Textures/`
-- `Audio/`
-- `Fonts/`
-- `Shaders/`
-- `Materials/`
-- `Prefabs/`
+```text
+AUAS_Data/
+├── legacy/            ← old flat assets, migrated automatically
+│   ├── Sprites/
+│   └── ...
+└── MyPack/
+    ├── Sprites/
+    ├── Textures/
+    ├── Audio/
+    ├── Fonts/
+    ├── Shaders/
+    ├── Materials/
+    └── Prefabs/
+```
 
-Each file is matched by its filename (without extension) to an in-game asset name. When a matching asset is loaded, the plugin intercepts the request and substitutes the custom asset.
+Each file is matched by its filename (without extension) to an in-game asset name. When a matching asset is loaded, the plugin intercepts the request and substitutes the custom asset. Older installs that kept category folders directly under `AUAS_Data` are migrated into `AUAS_Data/legacy/` on first launch.
 
 The project uses Harmony patches to hook into Unity asset-loading flows and BepInEx to initialize the runtime scanner.
 
@@ -40,6 +48,7 @@ AU-Assets-Swapper/
 ├── src/
 │   └── AU-Assets-Swapper/
 │       ├── AssetSwapManager.cs
+│       ├── PackManager.cs
 │       ├── Plugin.cs
 │       ├── SwapManagerComponent.cs
 │       ├── AU-Assets-Swapper.csproj
@@ -73,15 +82,18 @@ AU-Assets-Swapper/
 1. Build the project with `dotnet build`.
 2. Copy the generated plugin files into your Among Us BepInEx plugins folder.
 3. Launch the game.
-4. The plugin will create an `AUAS_Data` directory near the game install and populate swap folders automatically.
-5. Put replacement files in the correct category directory and ensure the filenames match the original asset names.
+4. The plugin will create an `AUAS_Data` directory near the game install. Existing flat swap folders are moved to `AUAS_Data/legacy/`.
+5. Put each replacement set in its own pack folder: `AUAS_Data/<PackName>/<category>/`, filenames matching the original asset names.
 
 ## Usage
 
 After the plugin loads, press:
 
 - `F5` to rescan and hot-reload replacements
+- `F6` to open the pack menu and switch packs (includes a `None` option for vanilla assets)
 - `F7` to toggle pick mode and inspect items under the cursor
+
+The chosen pack is saved to the `ActivePack` config entry and restored on the next launch.
 
 The plugin can log all loaded asset names with the configuration entry:
 

@@ -26,7 +26,7 @@ namespace AU_Assets_Swapper;
 
 internal class AssetSwapManager
 {
-    private readonly string _root;
+    private string _root;
 
     // case-insensitive so unity names match regardless of OS casing
     private readonly Dictionary<string, string> sprites = new(StringComparer.OrdinalIgnoreCase);
@@ -47,6 +47,8 @@ internal class AssetSwapManager
     {
         _root = rootPath;
     }
+
+    public void SetRoot(string rootPath) => _root = rootPath;
 // It is made by Isam
     public void ScanAndLoadAssets()
     {
@@ -81,6 +83,7 @@ internal class AssetSwapManager
 // Thanks for using my mod. If you are developer you can contribute.
     private void Scan(string cat, Dictionary<string, string> map)
     {
+        if (_root == null) return;
         var dir = Path.Combine(_root, cat);
         if (!Directory.Exists(dir)) return;
 

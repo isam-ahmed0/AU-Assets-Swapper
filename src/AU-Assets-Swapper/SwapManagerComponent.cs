@@ -37,6 +37,12 @@ public class SwapManagerComponent : MonoBehaviour
     private readonly List<SpriteRenderer> sprRends = new();
     private readonly List<Renderer> rends = new();
 
+    private bool packMenu;
+    private List<string> packs = new();
+    private GUIStyle btnStyle, btnActiveStyle;
+    private readonly Dictionary<SpriteRenderer, Sprite> origSpr = new();
+    private readonly Dictionary<Renderer, Texture> origTex = new();
+
     private void Update()
     {
         // hot reload
@@ -45,6 +51,12 @@ public class SwapManagerComponent : MonoBehaviour
             Plugin.SwapManager?.Rescan();
             ScanAndReplace();
             Plugin.LogSource.LogInfo("[AUAS] rescanned (F5)");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+            packMenu = !packMenu;
+            if (packMenu) packs = PackManager.GetPacks();
         }
 
         if (Input.GetKeyDown(KeyCode.F7))
@@ -68,6 +80,8 @@ public class SwapManagerComponent : MonoBehaviour
         if (scene != lastScene)
         {
             lastScene = scene;
+            origSpr.Clear();
+            origTex.Clear();
             Plugin.SwapManager?.Rescan();
             ScanAndReplace();
             Plugin.LogSource.LogInfo($"[AUAS] scene changed to '{scene}', rescanning");
@@ -250,8 +264,10 @@ public class SwapManagerComponent : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!pickMode && pickLines.Count == 0) return;
+        if (!pickMode && pickLines.Count == 0 && !packMenu) return;
         InitStyles();
+
+        if (packMenu) DrawPackMenu();
 
         float x = 10f, y = 10f, w = 520f, lh = 20f;
 
@@ -260,7 +276,7 @@ public class SwapManagerComponent : MonoBehaviour
             GUI.Box(new Rect(x, y, w, 28f), "", boxStyle);
             GUI.contentColor = Color.cyan;
             GUI.Label(new Rect(x + 8f, y + 4f, w - 16f, 22f),
-                "AUAS Pick Mode: ON  |  F5=Rescan  F7=Toggle", headerStyle);
+                "AUAS Pick Mode: ON  |  F5=Rescan  F6=Packs  F7=Toggle", headerStyle);
             GUI.contentColor = Color.white;
             y += 34f;
         }
@@ -299,6 +315,51 @@ public class SwapManagerComponent : MonoBehaviour
         headerStyle = new GUIStyle(GUI.skin.label)
         { fontSize = 15, fontStyle = FontStyle.Bold,
           normal = { textColor = Color.cyan } };
+
+        btnStyle = new GUIStyle(GUI.skin.button)
+        { fontSize = 14, alignment = TextAnchor.MiddleLeft };
+
+        btnActiveStyle = new GUIStyle(btnStyle)
+        { normal = { textColor = Color.green }, hover = { textColor = Color.green } };
+    }
+
+    private void DrawPackMenu()
+    {
+        float w = 300f, rh = 32f;
+        float h = 40f + (packs.Count + 2) * rh;
+        float x = (Screen.width - w) / 2f, y = (Screen.height - h) / 2f;
+
+        GUI.Box(new Rect(x, y, w, h), "", boxStyle);
+        GUI.contentColor = Color.cyan;
+        GUI.Label(new Rect(x + 10f, y + 8f, w - 20f, 24f),
+            $"AUAS Packs  [{Plugin.ActivePack.Value}]", headerStyle);
+        GUI.contentColor = Color.white;
+
+        float by = y + 36f;
+        if (GUI.Button(new Rect(x + 10f, by, w - 20f, 26f),
+                PackManager.None == Plugin.ActivePack.Value ? "None  *" : "None",
+                PackManager.None == Plugin.ActivePack.Value ? btnActiveStyle : btnStyle))
+            SwitchPack(PackManager.None);
+        by += rh;
+
+        foreach (var p in packs)
+        {
+            bool act = p == Plugin.ActivePack.Value;
+            if (GUI.Button(new Rect(x + 10f, by, w - 20f, 26f), act ? p + "  *" : p,
+                    act ? btnActiveStyle : btnStyle))
+                SwitchPack(p);
+            by += rh;
+        }
+
+        if (GUI.Button(new Rect(x + 10f, by, w - 20f, 26f), "Close", btnStyle))
+            packMenu = false;
+    }
+
+    private void SwitchPack(string p)
+    {
+        Plugin.SetActivePack(p);
+        ScanAndReplace();
+        packs = PackManager.GetPacks();
     }
 
     // lazy solid color texture
@@ -330,6 +391,17 @@ public class SwapManagerComponent : MonoBehaviour
 
         try
         {
+            if (Plugin.ActivePackPath == null)
+            {
+                foreach (var kv in origSpr)
+                    if (kv.Key != null) kv.Key.sprite = kv.Value;
+                foreach (var kv in origTex)
+                    if (kv.Key != null) kv.Key.material.mainTexture = kv.Value;
+                origSpr.Clear();
+                origTex.Clear();
+                return;
+            }
+
             ReplaceSprites(mgr);
             ReplaceRenders(mgr);
         }
@@ -354,13 +426,18 @@ public class SwapManagerComponent : MonoBehaviour
             if (mgr.HasSprite(name))
             {
                 var repl = mgr.LoadReplacementSprite(name);
-                if (repl != null) { sr.sprite = repl; count++; }
+                if (repl != null)
+                {
+                    if (!origSpr.ContainsKey(sr)) origSpr[sr] = sr.sprite;
+                    sr.sprite = repl; count++;
+                }
             }
             else if (mgr.HasTexture(name))
             {
                 var tex = mgr.LoadReplacementTexture(name);
                 if (tex != null)
                 {
+                    if (!origSpr.ContainsKey(sr)) origSpr[sr] = sr.sprite;
                     var newSpr = Sprite.Create(tex,
                         new Rect(0, 0, tex.width, tex.height),
                         new Vector2(0.5f, 0.5f), sr.sprite.pixelsPerUnit);
@@ -391,7 +468,11 @@ public class SwapManagerComponent : MonoBehaviour
             if (mgr.HasTexture(tn))
             {
                 var repl = mgr.LoadReplacementTexture(tn);
-                if (repl != null) { r.material.mainTexture = repl; count++; }
+                if (repl != null)
+                {
+                    if (!origTex.ContainsKey(r)) origTex[r] = mat.mainTexture;
+                    r.material.mainTexture = repl; count++;
+                }
             }
         }
         return count;
