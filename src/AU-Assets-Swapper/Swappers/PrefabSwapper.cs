@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with AU Assets Swapper. If not, see <https://www.gnu.org/licenses/>.
- * https://github.com/isam-ahmed0/AU-Assets-Swapper
+ * https://gamebanana.com/mods/719417
  */
 
 // Not tested yet. but i think works. if it works, it works.

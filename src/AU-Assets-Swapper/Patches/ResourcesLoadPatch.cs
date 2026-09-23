@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with AU Assets Swapper. If not, see <https://www.gnu.org/licenses/>.
- * https://github.com/isam-ahmed0/AU-Assets-Swapper
+ * https://gamebanana.com/mods/719417
  */
 
 using System;
@@ -33,7 +33,7 @@ internal static class ResourcesLoadPatch
     private static readonly HarmonyMethod _loadPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(LoadPrefix)));
     private static readonly HarmonyMethod _typedPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(TypedPrefix)));
     private static readonly HarmonyMethod _allPrefix = new(AccessTools.Method(typeof(ResourcesLoadPatch), nameof(AllPrefix)));
-/* https://github.com/isam-ahmed0/AU-Assets-Swapper
+/* https://gamebanana.com/mods/719417
 Please star my repo plz */
     public static void Patch(Harmony harmony)
     {
